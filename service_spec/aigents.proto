@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package aigents;
+
+message UserInfo {
+    string email = 1;
+    string name = 2;
+    string surname = 3;
+    string secret_question = 4;
+    string secret_answer = 5;
+}
+
+message Topic {
+    string label = 1;
+    string pattern = 2;
+}
+
+message Site {
+    string site = 1;
+}
+
+message Feed {
+    string title = 1;
+    string link = 2;
+    string img_url = 3;
+    string description = 4;
+}
+
+message JSONFeed {
+    string news_feed = 1;
+}
+
+message Channel {
+    string name = 1;
+}
+
+message Feeds {
+    repeated Feed news_feed = 1;
+}
+
+message Response {
+    string text = 1;
+}
+
+service AigentsNewsFeed {
+    rpc userLogin(UserInfo) returns (Response) {}
+    rpc addTopic(Topic) returns (Response) {}
+    rpc addSite(Site) returns (Response) {}
+    rpc reqNews(Channel) returns (Feeds) {}
+    rpc reqJSON(Channel) returns (JSONFeed) {}
+}
