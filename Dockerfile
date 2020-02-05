@@ -45,3 +45,15 @@ RUN apt-get install -y build-essential \
 # set working dir
 WORKDIR /singnet/aigents
 ADD . /singnet/aigents
+
+RUN protoc --proto_path=service_spec \
+           --python_out=service_spec \
+           --grpc_out=service_spec \
+           --plugin=protoc-gen-grpc=$(which grpc_python_plugin) \
+           ./service_spec/aigents.proto
+
+RUN protoc --proto_path=service_spec \
+           --php_out=service_spec \
+           --grpc_out=service_spec \
+           --plugin=protoc-gen-grpc=$(which grpc_php_plugin) \
+           ./service_spec/aigents.proto
