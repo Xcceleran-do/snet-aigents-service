@@ -13,7 +13,7 @@ import aigents_pb2_grpc as pb2_grpc
 
 
 RESP_OK = "OK"
-REDP_FAIL = "FAIL"
+RESP_FAIL = "FAIL"
 
 
 class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
@@ -24,14 +24,12 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         user_email = req.email;
         user_sec_q = req.secret_question;
         user_sec_a = req.secret_answer;
-
         self.aigents.aigents_login(user_email, user_sec_q, user_sec_a);
-        r = self.aigents.aigents_getemail()
-        
         #TODO better success/fail check
-        if r[0]["email"] == user_email:
-            return RESP_OK
-        return RESP_FAIL
+        r = self.aigents.aigents_get_email()
+        if r == user_email:
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def addTopic(self, req, ctxt):
         r = self.aigents.aigents_set_topics(req.label, req.pattern)
@@ -39,7 +37,7 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return RESP_OK
         return RESP_FAIL
 
-    def addSites(self, req, ctxt):
+    def addSite(self, req, ctxt):
         r = self.aigents.aigents_set_sites(req.site)
 
     def reqRSS(self, req, ctxt):
@@ -54,7 +52,6 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         return response
     
     def reqJSON(self, req, ctxt):
-        print("-------------------------")
         r = pb2.Response()
         r.text = self.aigents.aigents_get_news(req.name)
         return r
