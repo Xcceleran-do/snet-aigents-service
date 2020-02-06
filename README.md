@@ -60,22 +60,22 @@ instruction will be useful for setting PHP GRPC up.
 This instruction assumes the reader is using Ubuntu 18.04 with PHP 7.2
 
 Let's begin by installing PHP 7.2 (the following commands require sudo)
-    ```
-        apt-get update
-        apt-get install php7.2
-    ```
+```
+    apt-get update
+    apt-get install php7.2
+```
 
 We need phpize and php-pear for PHP extension management.
 (the following commands require sudo)
-    ```
-        apt-get install php7.2-dev php-pear
-    ```
+```
+    apt-get install php7.2-dev php-pear
+```
 Then using the `pecl` command we install protobuf and grpc
 (the following commands require sudo)
-    ```
-        pecl install protobuf
-        pecl install grpc
-    ```
+```
+    pecl install protobuf
+    pecl install grpc
+```
 
 Once the above two commands have sucessfuly installed protobuf and grpc, we need
 to let PHP know to load those extensions.
