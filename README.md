@@ -27,7 +27,7 @@ take care of building the image, creating the container (launching the service)
 and building the protobufs.
 
 The manage script has the following options
-    ```
+```
     Usage: bash manage.sh OPTION [LABEL] [SERVICE_PORT]
       Options:
         build        build the docker image
@@ -38,7 +38,7 @@ The manage script has the following options
       LABEL  :  image and container label (optional - default=date)
 
       SERVICE_PORT  :  port to expose the service through (optional - default=9999)
-    ```
+```
 
 If no label is provided during build and run, the script will create a docker
 image and container named `snet_aigents` with the day's month and day as the tag.
