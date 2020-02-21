@@ -1,0 +1,48 @@
+{
+    "blockchain_network_selected": "ropsten",
+    "daemon_end_point": "0.0.0.0:7113",
+    "ethereum_json_rpc_endpoint": "https://ropsten.infura.io/v3/e7732e1f679e461b9bb4da5653ac3fc2",
+    "ipfs_end_point": "http://ipfs.singularitynet.io:80",
+  
+  
+  
+  
+    "log": {
+        "level": "debug",
+        "output": {
+            "current_link": "./snetd-ropsten.log",
+            "file_pattern": "./snetd-ropsten.%Y%m%d.log",
+            "rotation_count": 0,
+            "rotation_time_in_sec": 8640,
+            "type": "file"
+        }
+    },
+    "payment_channel_storage_server": {
+      "id": "storage-ropsten",
+      "host": "127.0.0.1",
+      "client_port": 2381,
+      "peer_port": 2382,
+      "token": "unique-token",
+      "cluster": "storage-ropsten=http://127.0.0.1:2382",
+      "data_dir": "/opt/singnet/etcd/ropsten",
+      "enabled": true
+    },
+  
+    "free_call_signer_address":"0x3Bb9b2499c283cec176e7C707Ecb495B7a961ebf",
+    "metering_end_point": "https://ropsten-marketplace.singularitynet.io/metering",
+    "pvt_key_for_metering":    "44afe70436396df77f8ec2bcebc060d85683d10d5940d253a277e24daddca6e3",
+  
+    "organization_id": "xccelerando",
+    "passthrough_enabled": true,
+    "passthrough_endpoint": "http://localhost:9999",
+    "payent_channel_ca_path": "/singnet/aigents/.certs/ca.pem",
+    "payent_channel_cert_path": "/singnet/aigents/.certs/client.pem",
+    "payent_channel_key_path": "/singnet/aigents/.certs/client-key.pem",
+  
+  
+    "service_id": "snet-aigents-service"
+  
+  
+  
+  }
+  
