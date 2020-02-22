@@ -35,9 +35,9 @@
     "organization_id": "xccelerando",
     "passthrough_enabled": true,
     "passthrough_endpoint": "http://localhost:9999",
-    "payent_channel_ca_path": "/singnet/aigents/.certs/ca.pem",
-    "payent_channel_cert_path": "/singnet/aigents/.certs/client.pem",
-    "payent_channel_key_path": "/singnet/aigents/.certs/client-key.pem",
+    "payent_channel_ca_path": "/opt/singnet/.certs/ca.pem",
+    "payent_channel_cert_path": "/opt/singnet/.certs/client.pem",
+    "payent_channel_key_path": "/opt/singnet/.certs/client-key.pem",
   
   
     "service_id": "snet-aigents-service"

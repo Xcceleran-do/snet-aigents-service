@@ -31,6 +31,7 @@ run_service() {
             docker run -d --name $C_NAME \
                        -p $H_PORT:$C_PORT \
                        -p 7113:7113 \
+                        -v /home/yitbarek/.certs/:/opt/singnet/.certs/ \
                        $I_NAME \
                        python3  with_daemon/run_aigent.py   --daemon-config with_daemon/snetd_configs/snetd.ropsten.json
         else
@@ -60,6 +61,7 @@ build_proto() {
         export HOST_UID=$UID
         docker run --rm \
                    -v $BASE_DIR/service_spec:/singnet/aigents/service_spec \
+                   -v /opt/singnet/.certs:/opt/singnet/ \
                    -e "HOST_UID" \
                    $I_NAME \
                    sh -c 'protoc --proto_path=/singnet/aigents/service_spec \
