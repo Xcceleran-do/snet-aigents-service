@@ -1,7 +1,5 @@
 import sys
 import grpc
-import json
-from google.protobuf.json_format import MessageToJson
 
 sys.path.append("./service_spec")
 import aigents_pb2 as pb2
@@ -14,23 +12,17 @@ def user_login(channel, email, sec_q, sec_a):
     user_info.secret_question = sec_q
     user_info.secret_answer = sec_a
     response = stub.userLogin(user_info)
-    response = MessageToJson(response)
-    response = json.loads(response)
-    result = response['text']
-    #print(result)
-    return result
+
+    print(response)
+    return response
 
 def get_news_feed(channel, name):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     ch = pb2.Channel()
     ch.name = name
     response = stub.reqJSON(ch)
-    response = MessageToJson(response)
-    response = json.loads(response)
-    #print(type(response))
-    news = response['newsFeed']
-    #print(news)
-    return news
+    print(response)
+    return response
 
 
 with grpc.insecure_channel('localhost:9999') as channel:

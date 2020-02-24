@@ -4,6 +4,8 @@ import sys
 from concurrent import futures
 import time
 import grpc
+import json
+from google.protobuf.json_format import MessageToJson
 
 from aigents import AigentsAdapter
 
@@ -27,9 +29,16 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         self.aigents.aigents_login(user_email, user_sec_q, user_sec_a);
         #TODO better success/fail check
         r = self.aigents.aigents_get_email()
+        response = ''
         if r == user_email:
-            return pb2.Response(text=RESP_OK)
-        return pb2.Response(text=RESP_FAIL)
+            response = pb2.Response(text=RESP_OK) 
+        else:
+            response = pb2.Response(text=RESP_FAIL)
+
+        response = MessageToJson(response)
+        response = json.loads(response)
+        result = response['text']
+        return result
 
     def addTopic(self, req, ctxt):
         r = self.aigents.aigents_set_topics(req.label, req.pattern)
@@ -54,7 +63,10 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
     def reqJSON(self, req, ctxt):
         r = pb2.Response()
         r.text = self.aigents.aigents_get_news(req.name)
-        return r
+        response = MessageToJson(r)
+        response = json.loads(response)
+        news = response['newsFeed']
+        return news
 
 
 def main():
