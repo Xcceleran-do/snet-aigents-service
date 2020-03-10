@@ -43,6 +43,31 @@ run_service() {
     fi
 }
 
+run_service_with_daemon() {
+    H_PORT=7110
+    if [ -f /.dockerenv ] ; then
+        printf "${BAD_COLOR}Ignoring! Running in a docker container${NORMAL_COLOR}\n"
+    else
+        docker inspect $C_NAME > /dev/null 2>&1
+        if [ $? -eq 1 ] ; then
+            printf "${GOOD_COLOR}Starting new container...${NORMAL_COLOR}\n"
+            docker run -d --name $C_NAME \
+                       -p $H_PORT:$C_PORT \
+                       -p 7113:7113 \
+                        -v /home/yitbarek/.certs/:/opt/singnet/.certs/ \
+                       $I_NAME \
+                       python3  with_daemon/run_aigent.py   --daemon-config with_daemon/snetd_configs/snetd.ropsten.json
+        else
+            if [ "$(docker inspect -f '{{.State.Running}}' $C_NAME)" = "true"] ; then
+                printf "${OKAY_COLOR}Container already running. ${NORMAL_COLOR}\n"
+            else
+                printf "${OKAY_COLOR}Container exited. Starting... ${NORMAL_COLOR}\n"
+                docker start $C_NAME
+            fi
+        fi
+    fi
+}
+
 stop_service() {
     if [ "$(docker inspect -f '{{.State.Running}}' $C_NAME)" = "true" ]; then
         docker stop $C_NAME
@@ -81,7 +106,8 @@ help () {
     echo "Usage: bash manage.sh OPTION [LABEL] [SERVICE_PORT]"
     echo "  Options:"
     echo "    build        build the docker image"
-    echo "    run          run the snet service (start container)"
+    echo "    run          run the snet service with out daemon (start container)"
+    echo "    run-with-daemon        run the snet service with daemon"
     echo "    stop         stop the snet service (stop container)"
     echo "    build-proto  build the proto files"
     echo -e "\n  LABEL  :  image and container label (optional - default=date)"
@@ -91,6 +117,7 @@ help () {
 case $1 in
   build) build_docker ;;
   run) run_service ;;
+  run-with-daemon) run_service_with_daemon ;;
   stop) stop_service ;;
   build-proto) build_proto ;;
   *) help ;;
