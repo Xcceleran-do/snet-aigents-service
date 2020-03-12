@@ -18,9 +18,9 @@ RUN apt-get update && \
 RUN pip3 install snet-cli
 
 RUN cd /tmp && \
-    wget "https://github.com/singnet/snet-daemon/releases/download/v2.0.2/snet-daemon-v2.0.2-linux-amd64.tar.gz" && \
-    tar -xvf snet-daemon-v2.0.2-linux-amd64.tar.gz && \
-    mv snet-daemon-v2.0.2-linux-amd64/snetd /usr/local/bin/snetd
+    wget "https://github.com/singnet/snet-daemon/releases/download/v3.1.1/snet-daemon-v3.1.1-linux-amd64.tar.gz" && \
+    tar -xvf snet-daemon-v3.1.1-linux-amd64.tar.gz && \
+    mv snet-daemon-v3.1.1-linux-amd64/snetd /usr/local/bin/snetd
 
 # install grpc
 RUN apt-get install -y build-essential \
