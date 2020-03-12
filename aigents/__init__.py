@@ -64,6 +64,23 @@ class AigentsAdapter():
             raise RuntimeError("Aigents - no input data "+key)
         return data[key]
 
+    def aigents_signup(self, f_name, l_name, email, sec_q, sec_a):
+        r = self.request("logout")
+        r = self.request("my email " + email
+                       + ", name " + f_name
+                       + ", surname " + l_name
+                       + ", secret question " + sec_q
+                       + ", secret answer " + sec_a)
+        if r == "What your " + sec_q + "?":
+            r = self.request("my " + sec_q + " " + sec_a)
+        else:
+            return AIGENTS_RESP_FAIL
+
+        if r.find(self.settings.AIGENTS_RESP_OK + "Hello") == -1:
+            return AIGENTS_RESP_FAIL
+        self.aigents_set_format("json")
+        return AIGENTS_RESP_OK
+
     def aigents_login(self, email, sec_q, sec_a):
         r = self.request("logout")
         r = self.request("my email " + email)
@@ -89,13 +106,21 @@ class AigentsAdapter():
     def aigents_get_email(self):
         r = self.request("what my email?")
         return json.loads(r)[0]["email"]
-    
-    def aigents_set_topics(self, label, pattern):
+
+    def aigents_add_topic(self, label, pattern):
         r = self.request("my topics " + label + ", trusts " + pattern)
         return r
-    
-    def aigents_set_sites(self, site):
-        r = self.request("my sitess " + site + ", trusts " + site)
+
+    def aigents_add_site(self, site):
+        r = self.request("my sites " + site + ", trusts " + site)
+        return r
+
+    def aigents_remove_topic(self, label, pattern):
+        r = self.request("name " + label + ", trust false")
+        return r
+
+    def aigents_remove_site(self, site):
+        r = self.request("my sites no " + site + ", ignores " + site)
         return r
 
     def aigents_get_rss(self, channel):

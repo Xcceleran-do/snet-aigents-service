@@ -43,6 +43,7 @@ message Response {
 }
 
 service AigentsNewsFeed {
+    rpc userSignup(UserInfo) returns (Response) {}
     rpc userLogin(UserInfo) returns (Response) {}
     rpc addTopic(Topic) returns (Response) {}
     rpc addSite(Site) returns (Response) {}
