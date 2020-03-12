@@ -14,7 +14,7 @@ RUN apt-get update && \
         libusb-1.0.0-dev \
         python3 \
         python3-pip
-
+RUN apt-get update
 RUN pip3 install snet-cli
 
 RUN cd /tmp && \
