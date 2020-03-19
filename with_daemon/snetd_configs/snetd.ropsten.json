@@ -28,16 +28,15 @@
       "enabled": true
     },
   
-    "free_call_signer_address":"0x3Bb9b2499c283cec176e7C707Ecb495B7a961ebf",
-    "metering_end_point": "https://ropsten-marketplace.singularitynet.io/metering",
+    "metering_end_point": "https://ropsten-marketplace.singularitynet.io",
     "pvt_key_for_metering":    "44afe70436396df77f8ec2bcebc060d85683d10d5940d253a277e24daddca6e3",
   
     "organization_id": "xccelerando",
     "passthrough_enabled": true,
     "passthrough_endpoint": "http://localhost:9999",
-    "payent_channel_ca_path": "/opt/singnet/.certs/ca.pem",
-    "payent_channel_cert_path": "/opt/singnet/.certs/client.pem",
-    "payent_channel_key_path": "/opt/singnet/.certs/client-key.pem",
+    "payment_channel_ca_path": "/opt/singnet/.certs/ca.pem",
+    "payment_channel_cert_path": "/opt/singnet/.certs/client.pem",
+    "payment_channel_key_path": "/opt/singnet/.certs/client-key.pem",
   
   
     "service_id": "snet-aigents-service"
