@@ -71,7 +71,7 @@ class AigentsAdapter():
                        + ", surname " + l_name
                        + ", secret question " + sec_q
                        + ", secret answer " + sec_a)
-        if r == "What your " + sec_q + "?":
+        if r == "What your " + sec_q.lower() + "?":
             r = self.request("my " + sec_q + " " + sec_a)
         else:
             return AIGENTS_RESP_FAIL
@@ -84,9 +84,10 @@ class AigentsAdapter():
     def aigents_login(self, email, sec_q, sec_a):
         r = self.request("logout")
         r = self.request("my email " + email)
-        # XXX check if server asked for secq-seca or name
-        # simply going with secq seca for now
-        r = self.request("my " + sec_q + " " + sec_a)
+        if r == "What your " + sec_q.lower() + "?":
+            r = self.request("my " + sec_q + " " + sec_a)
+        else:
+            return AIGENTS_RESP_FAIL
         if r.find(self.settings.AIGENTS_RESP_OK + "Hello") == -1:
             return AIGENTS_RESP_FAIL
         # XXX setting default format JSON
@@ -107,20 +108,20 @@ class AigentsAdapter():
         r = self.request("what my email?")
         return json.loads(r)[0]["email"]
 
-    def aigents_add_topic(self, label, pattern):
-        r = self.request("my topics " + label + ", trusts " + pattern)
+    def aigents_add_topic(self, pattern):
+        r = self.request("my topics '" + pattern + "', trusts '" + pattern + "'")
         return r
 
     def aigents_add_site(self, site):
-        r = self.request("my sites " + site + ", trusts " + site)
+        r = self.request("my sites '" + site + "', trusts '" + site + "'")
         return r
 
-    def aigents_remove_topic(self, label, pattern):
-        r = self.request("name " + label + ", trust false")
+    def aigents_remove_topic(self, pattern):
+        r = self.request("name '" + pattern + "' trust false")
         return r
 
     def aigents_remove_site(self, site):
-        r = self.request("my sites no " + site + ", ignores " + site)
+        r = self.request("my sites no '" + site + "' ignores '" + site + "'")
         return r
 
     def aigents_get_rss(self, channel):

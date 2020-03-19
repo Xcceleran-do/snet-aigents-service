@@ -47,22 +47,28 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         return pb2.Response(text=RESP_FAIL)
 
     def addTopic(self, req, ctxt):
-        r = self.aigents.aigents_add_topic(req.label, req.pattern)
-        if r.text == "Ok.":
-            return RESP_OK
-        return RESP_FAIL
+        r = self.aigents.aigents_add_topic(req.pattern)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def addSite(self, req, ctxt):
-        r = self.aigents.aigents_add_site(req.site)
+        r = self.aigents.aigents_add_site(req.url)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def rmTopic(self, req, ctxt):
-        r = self.aigents.aigents_remove_topic(req.label, req.pattern)
-        if r.text == "Ok.":
-            return RESP_OK
-        return RESP_FAIL
+        r = self.aigents.aigents_remove_topic(req.pattern)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def rmSite(self, req, ctxt):
-        r = self.aigents.aigents_remove_site(req.site)
+        r = self.aigents.aigents_remove_site(req.url)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def reqRSS(self, req, ctxt):
         response = pb2.Feeds()
