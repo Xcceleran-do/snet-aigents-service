@@ -11,12 +11,11 @@ message UserInfo {
 }
 
 message Topic {
-    string label = 1;
-    string pattern = 2;
+    string pattern = 1;
 }
 
 message Site {
-    string site = 1;
+    string url = 1;
 }
 
 message Feed {
@@ -43,9 +42,12 @@ message Response {
 }
 
 service AigentsNewsFeed {
+    rpc userSignup(UserInfo) returns (Response) {}
     rpc userLogin(UserInfo) returns (Response) {}
     rpc addTopic(Topic) returns (Response) {}
     rpc addSite(Site) returns (Response) {}
+    rpc rmTopic(Topic) returns (Response) {}
+    rpc rmSite(Site) returns (Response) {}
     rpc reqNews(Channel) returns (Feeds) {}
     rpc reqJSON(Channel) returns (JSONFeed) {}
 }

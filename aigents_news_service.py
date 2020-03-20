@@ -20,10 +20,25 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
     def __init__(self):
         self.aigents = AigentsAdapter()
     
+    def userSignup(self, req, ctxt):
+        user_f_name = req.name
+        user_l_name = req.surname
+        user_email = req.email
+        user_sec_q = req.secret_question
+        user_sec_a = req.secret_answer
+        self.aigents.aigents_signup(user_f_name, user_l_name,
+                                    user_email, user_sec_q,
+                                    user_sec_a);
+        #TODO better success/fail check
+        r = self.aigents.aigents_get_email()
+        if r == user_email:
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
+
     def userLogin(self, req, ctxt):
-        user_email = req.email;
-        user_sec_q = req.secret_question;
-        user_sec_a = req.secret_answer;
+        user_email = req.email
+        user_sec_q = req.secret_question
+        user_sec_a = req.secret_answer
         self.aigents.aigents_login(user_email, user_sec_q, user_sec_a);
         #TODO better success/fail check
         r = self.aigents.aigents_get_email()
@@ -32,13 +47,28 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         return pb2.Response(text=RESP_FAIL)
 
     def addTopic(self, req, ctxt):
-        r = self.aigents.aigents_set_topics(req.label, req.pattern)
-        if r.text == "Ok.":
-            return RESP_OK
-        return RESP_FAIL
+        r = self.aigents.aigents_add_topic(req.pattern)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def addSite(self, req, ctxt):
-        r = self.aigents.aigents_set_sites(req.site)
+        r = self.aigents.aigents_add_site(req.url)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
+
+    def rmTopic(self, req, ctxt):
+        r = self.aigents.aigents_remove_topic(req.pattern)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
+
+    def rmSite(self, req, ctxt):
+        r = self.aigents.aigents_remove_site(req.url)
+        if r == "Ok.":
+            return pb2.Response(text=RESP_OK)
+        return pb2.Response(text=RESP_FAIL)
 
     def reqRSS(self, req, ctxt):
         response = pb2.Feeds()
