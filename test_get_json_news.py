@@ -64,6 +64,37 @@ def remove_site(channel):
     print("Called rmSite ---->" , resp)
     assert resp.text == "OK"
 
+def create_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni = pb2.NewsItem()
+    ni.title = "Test Article Title"
+    ni.date = "2020-01-30"
+    ni.url = "https://aigents.icog-labs.com"
+    resp = stub.createNews(ni)
+    print("Called createNews ---->" , resp)
+    assert resp.text == "OK"
+
+def vote_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni = pb2.NewsItem()
+    ni.title = "Test Article Title"
+    ni.date = "2020-01-30"
+    ni.url = "https://aigents.icog-labs.com"
+    ni.vote = 0
+    resp = stub.voteNews(ni)
+    print("Called voteNews ---->" , resp)
+    assert resp.text == "OK"
+
+def remove_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni = pb2.NewsItem()
+    ni.title = "Test Article Title"
+    ni.date = "2020-01-30"
+    ni.url = "https://aigents.icog-labs.com"
+    resp = stub.rmNews(ni)
+    print("Called rmNews ---->" , resp)
+    assert resp.text == "OK"
+
 def get_news_feed(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     ch = pb2.Channel()
