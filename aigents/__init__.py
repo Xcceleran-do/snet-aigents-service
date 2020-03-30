@@ -124,6 +124,35 @@ class AigentsAdapter():
         r = self.request("my sites no '" + site + "' ignores '" + site + "'")
         return r
 
+    def aigents_create_news_item(self, title, date, url, img_url):
+        r = self.request("There text '" + title + "', sources '"
+                         + url + "', times " + date + ", new true,"
+                         + "trust true update")
+        return r
+
+    def aigents_vote_on_item(self, title, date, url, vote):
+        r = self.request("sources '" + url "' and text '"
+                         + title + "' and times " + date
+                         + " trust " + "false" if vote == 0 else "true")
+        return r
+
+    def aigents_rm_news_item(self, title, date, url):
+        r = self.request("Sources '" + url + "' and text '"
+                         + title + "' and times " + date + " new false")
+        return r
+
+# XXX command from doc "is peer, name , surname email share true" doesn't work
+#    def aigents_share(self, peer):
+#        r = self.request("is peer, name " + name + " email " + email
+#                         + " share " + "false" if share == 0 else "true")
+#        return r
+
+# XXX command from doc "is peer, name , surname email trust true" doesn't work
+#    def aigents_trust_peer(self, peer):
+#        r = self.request("is peer, name " + name + " email " + email
+#                         + " trust " + "false" if share == 0 else "true")
+#        return r
+
     def aigents_get_rss(self, channel):
         rss = self.request("rss " + channel)
         xr = ET.fromstring(rss)
