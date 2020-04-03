@@ -42,7 +42,7 @@ message NewsItem {
     string date = 2;
     string url = 3;
     string img_url = 4;
-    int32 vote = 5;
+    bool vote = 5;
 }
 
 message Response {
