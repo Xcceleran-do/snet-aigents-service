@@ -37,6 +37,19 @@ message Feeds {
     repeated Feed news_feed = 1;
 }
 
+message NewsItem {
+    string title = 1;
+    string date = 2;
+    string url = 3;
+    string img_url = 4;
+    bool vote = 5;
+}
+
+message PeerAction {
+    string email = 1;
+    bool action = 2;
+}
+
 message Response {
     string text = 1;
 }
@@ -48,6 +61,12 @@ service AigentsNewsFeed {
     rpc addSite(Site) returns (Response) {}
     rpc rmTopic(Topic) returns (Response) {}
     rpc rmSite(Site) returns (Response) {}
+    rpc createNews(NewsItem) returns (Response) {}
+    rpc voteNews(NewsItem) returns (Response) {}
+    rpc rmNews(NewsItem) returns (Response) {}
+    rpc mkFriend(PeerAction) returns (Response) {}
+    rpc sharePeer(PeerAction) returns (Response) {}
+    rpc receivePeer(PeerAction) returns (Response) {}
     rpc reqNews(Channel) returns (Feeds) {}
     rpc reqJSON(Channel) returns (JSONFeed) {}
 }

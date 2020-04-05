@@ -8,7 +8,9 @@ class AigentsSettings():
     def __init__(self, **custom_settings):
         self._ENV_PREFIX = 'SN_AIGENTS_'
         self.AIGENTS_PATH = 'https://aigents.icog-labs.com/69616567746e6c736e610067'
-        self.AIGENTS_LOGIN_EMAIL = 'aigents@icog-labs.com'
+        self.AIGENTS_LOGIN_EMAIL = 'test@icog-labs.com'
+        self.AIGENTS_LOGIN_NAME = 'Test'
+        self.AIGENTS_LOGIN_SURNAME = 'Aigents'
         self.AIGENTS_SECRET_QUESTION = 'abebe'
         self.AIGENTS_SECRET_ANSWER = 'beso'
         self.AIGENTS_RESP_OK = "Ok. "

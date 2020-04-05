@@ -84,8 +84,8 @@ class AigentsAdapter():
     def aigents_login(self, email, sec_q, sec_a):
         r = self.request("logout")
         r = self.request("my email " + email)
-        if r == "What your " + sec_q.lower() + "?":
-            r = self.request("my " + sec_q + " " + sec_a)
+        if r.lower() == "what your " + sec_q.lower() + "?":
+            r = self.request(sec_a)
         else:
             return AIGENTS_RESP_FAIL
         if r.find(self.settings.AIGENTS_RESP_OK + "Hello") == -1:
@@ -105,11 +105,16 @@ class AigentsAdapter():
         return r
 
     def aigents_get_email(self):
+        self.aigents_set_format("json")
         r = self.request("what my email?")
         return json.loads(r)[0]["email"]
 
     def aigents_add_topic(self, pattern):
         r = self.request("my topics '" + pattern + "', trusts '" + pattern + "'")
+        return r
+
+    def aigents_add_topics(self, pattern):
+        r = self.request("my topics " + pattern + ", trusts " + pattern)
         return r
 
     def aigents_add_site(self, site):
@@ -122,6 +127,55 @@ class AigentsAdapter():
 
     def aigents_remove_site(self, site):
         r = self.request("my sites no '" + site + "' ignores '" + site + "'")
+        return r
+
+    def aigents_create_news_item(self, title, date, url, img_url):
+        r = self.request("There text '" + title + "', sources '"
+                         + url + "', times " + date + ", new true,"
+                         + "trust true update")
+        return r
+
+    def aigents_vote_on_item(self, title, date, url, vote):
+        req = "sources '" + url + "' and text '" \
+              + title + "' and times " + date + " trust "
+        req += "true" if vote else "false"
+        r = self.request(req)
+        return r
+
+    def aigents_rm_news_item(self, title, date, url):
+        r = self.request("Sources '" + url + "' and text '"
+                         + title + "' and times " + date + " new false")
+        return r
+
+    def aigents_friend(self, email, friend):
+        req = "is peer and email '" + email + "' friend "
+        req += "true" if friend else "false"
+        r = self.request(req)
+        return r
+
+    def aigents_get_peer_name(self, email):
+        self.aigents_set_format("json")
+        r = self.request("what is peer, email " + email
+                       + " name, surname?")
+        j = json.loads(r)[0]
+        return j['name'], j['surname']
+
+    def aigents_peer_share(self, email, share):
+        if share:
+            self.aigents_friend(email, True)
+        name, surname = self.aigents_get_peer_name(email)
+        req = "is peer, name " + name + " and email " + email + " share "
+        req += "true" if share else "false"
+        r = self.request(req)
+        return r
+
+    def aigents_peer_receive(self, email, receive):
+        if receive:
+            self.aigents_friend(email, True)
+        name, surname = self.aigents_get_peer_name(email)
+        req = "is peer, name " + name + " and email " + email + " trust "
+        req += "true" if receive else "false"
+        r = self.request(req)
         return r
 
     def aigents_get_rss(self, channel):
