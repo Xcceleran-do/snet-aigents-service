@@ -45,6 +45,11 @@ message NewsItem {
     bool vote = 5;
 }
 
+message PeerAction {
+    string email = 1;
+    bool action = 2;
+}
+
 message Response {
     string text = 1;
 }
@@ -59,6 +64,9 @@ service AigentsNewsFeed {
     rpc createNews(NewsItem) returns (Response) {}
     rpc voteNews(NewsItem) returns (Response) {}
     rpc rmNews(NewsItem) returns (Response) {}
+    rpc mkFriend(PeerAction) returns (Response) {}
+    rpc sharePeer(PeerAction) returns (Response) {}
+    rpc receivePeer(PeerAction) returns (Response) {}
     rpc reqNews(Channel) returns (Feeds) {}
     rpc reqJSON(Channel) returns (JSONFeed) {}
 }

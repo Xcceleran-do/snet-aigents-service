@@ -95,6 +95,33 @@ def remove_news(channel):
     print("Called rmNews ---->" , resp)
     assert resp.text == "OK"
 
+def make_friend(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa = pb2.PeerAction()
+    pa.email = "dagim@icog-labs.com"
+    pa.action = True
+    resp = stub.mkFriend(pa)
+    print("Called mkFriend ---->" , resp)
+    assert resp.text == "OK"
+
+def share_to_peer(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa = pb2.PeerAction()
+    pa.email = "dagim@icog-labs.com"
+    pa.action = True
+    resp = stub.sharePeer(pa)
+    print("Called sharePeer ---->" , resp)
+    assert resp.text == "OK"
+
+def receive_from_peer(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa = pb2.PeerAction()
+    pa.email = "dagim@icog-labs.com"
+    pa.action = True
+    resp = stub.receivePeer(pa)
+    print("Called receivePeer ---->" , resp)
+    assert resp.text == "OK"
+
 def get_news_feed(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     ch = pb2.Channel()
@@ -110,4 +137,7 @@ with grpc.insecure_channel('localhost:9999') as channel:
     add_site(channel)
     remove_topic(channel)
     remove_site(channel)
+    make_friend(channel)
+    share_to_peer(channel)
+    receive_from_peer(channel)
     get_news_feed(channel)
