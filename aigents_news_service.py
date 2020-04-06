@@ -52,11 +52,25 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def addTopics(self, req, ctxt):
+        for topic in req.topics:
+            r = self.aigents.aigents_add_topic(topic.pattern)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def addSite(self, req, ctxt):
         r = self.aigents.aigents_add_site(req.url)
         if r == "Ok.":
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
+
+    def addSites(self, req, ctxt):
+        for site in req.sites:
+            r = self.aigents.aigents_add_site(site.url)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
 
     def rmTopic(self, req, ctxt):
         r = self.aigents.aigents_remove_topic(req.pattern)
@@ -64,11 +78,25 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def rmTopics(self, req, ctxt):
+        for topic in req.topics:
+            r = self.aigents.aigents_remove_topic(topic.pattern)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def rmSite(self, req, ctxt):
         r = self.aigents.aigents_remove_site(req.url)
         if r == "Ok.":
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
+
+    def rmSites(self, req, ctxt):
+        for site in req.sites:
+            r = self.aigents.aigents_remove_site(site.url)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
 
     def createNews(self, req, ctxt):
         r = self.aigents.aigents_create_news_item(
@@ -80,6 +108,17 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def mcreateNews(self, req, ctxt):
+        for nitem in req.news_items:
+            r = self.aigents.aigents_create_news_item(
+                    nitem.title,
+                    nitem.date,
+                    nitem.url,
+                    nitem.img_url)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def voteNews(self, req, ctxt):
         r = self.aigents.aigents_vote_on_item(
                 req.title,
@@ -90,6 +129,17 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def mvoteNews(self, req, ctxt):
+        for nitem in req.news_items:
+            r = self.aigents.aigents_vote_on_item(
+                    nitem.title,
+                    nitem.date,
+                    nitem.url,
+                    nitem.vote)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def rmNews(self, req, ctxt):
         r = self.aigents.aigents_rm_news_item(
                 req.title,
@@ -99,11 +149,28 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def mrmNews(self, req, ctxt):
+        for nitem in req.news_items:
+            r = self.aigents.aigents_rm_news_item(
+                    nitem.title,
+                    nitem.date,
+                    nitem.url)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def mkFriend(self, req, ctxt):
         r = self.aigents.aigents_friend(req.email, req.action)
         if r == "Ok.":
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
+
+    def mkFriends(self, req, ctxt):
+        for paction in req.peer_actions:
+            r = self.aigents.aigents_friend(paction.email, paction.action)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
 
     def sharePeer(self, req, ctxt):
         r = self.aigents.aigents_peer_share(req.email, req.action)
@@ -111,11 +178,25 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
 
+    def sharePeers(self, req, ctxt):
+        for paction in req.peer_actions:
+            r = self.aigents.aigents_peer_share(paction.email, paction.action)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
+
     def receivePeer(self, req, ctxt):
         r = self.aigents.aigents_peer_receive(req.email, req.action)
         if r == "Ok.":
             return pb2.Response(text=RESP_OK)
         return pb2.Response(text=RESP_FAIL)
+
+    def receivePeers(self, req, ctxt):
+        for paction in req.peer_actions:
+            r = self.aigents.aigents_peer_receive(paction.email, paction.action)
+            if r != "Ok.":
+                return pb2.Response(text=RESP_FAIL)
+        return pb2.Response(text=RESP_OK)
 
     def reqRSS(self, req, ctxt):
         response = pb2.Feeds()

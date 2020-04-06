@@ -14,8 +14,16 @@ message Topic {
     string pattern = 1;
 }
 
+message Topics {
+    repeated Topic topics = 1;
+}
+
 message Site {
     string url = 1;
+}
+
+message Sites {
+    repeated Site sites = 1;
 }
 
 message Feed {
@@ -45,9 +53,17 @@ message NewsItem {
     bool vote = 5;
 }
 
+message NewsItems {
+    repeated NewsItem news_items = 1;
+}
+
 message PeerAction {
     string email = 1;
     bool action = 2;
+}
+
+message PeerActions {
+    repeated PeerAction peer_actions = 1;
 }
 
 message Response {
@@ -58,15 +74,25 @@ service AigentsNewsFeed {
     rpc userSignup(UserInfo) returns (Response) {}
     rpc userLogin(UserInfo) returns (Response) {}
     rpc addTopic(Topic) returns (Response) {}
+    rpc addTopics(Topics) returns (Response) {}
     rpc addSite(Site) returns (Response) {}
+    rpc addSites(Sites) returns (Response) {}
     rpc rmTopic(Topic) returns (Response) {}
+    rpc rmTopics(Topics) returns (Response) {}
     rpc rmSite(Site) returns (Response) {}
+    rpc rmSites(Sites) returns (Response) {}
     rpc createNews(NewsItem) returns (Response) {}
+    rpc mcreateNews(NewsItems) returns (Response) {}
     rpc voteNews(NewsItem) returns (Response) {}
+    rpc mvoteNews(NewsItems) returns (Response) {}
     rpc rmNews(NewsItem) returns (Response) {}
+    rpc mrmNews(NewsItems) returns (Response) {}
     rpc mkFriend(PeerAction) returns (Response) {}
+    rpc mkFriends(PeerActions) returns (Response) {}
     rpc sharePeer(PeerAction) returns (Response) {}
+    rpc sharePeers(PeerActions) returns (Response) {}
     rpc receivePeer(PeerAction) returns (Response) {}
+    rpc receivePeers(PeerActions) returns (Response) {}
     rpc reqNews(Channel) returns (Feeds) {}
     rpc reqJSON(Channel) returns (JSONFeed) {}
 }
