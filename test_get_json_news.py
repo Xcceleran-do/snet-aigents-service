@@ -114,15 +114,48 @@ def create_news(channel):
     print("Called createNews ---->" , resp)
     assert resp.text == "OK"
 
+def mcreate_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni0 = pb2.NewsItem()
+    ni0.title = "Test Article One Title"
+    ni0.date = "2020-01-30"
+    ni0.url = "https://aigents.icog-labs.com/one"
+    ni1 = pb2.NewsItem()
+    ni1.title = "Test Article Two Title"
+    ni1.date = "2020-01-30"
+    ni1.url = "https://aigents.icog-labs.com/two"
+    nis = pb2.NewsItems()
+    nis.news_items.extend([ni0, ni1])
+    resp = stub.mcreateNews(nis)
+    print("Called mcreateNews ---->" , resp)
+    assert resp.text == "OK"
+
 def vote_news(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     ni = pb2.NewsItem()
     ni.title = "Test Article Title"
     ni.date = "2020-01-30"
     ni.url = "https://aigents.icog-labs.com"
-    ni.vote = 0
+    ni.vote = False
     resp = stub.voteNews(ni)
     print("Called voteNews ---->" , resp)
+    assert resp.text == "OK"
+
+def mvote_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni0 = pb2.NewsItem()
+    ni0.title = "Test Article One Title"
+    ni0.date = "2020-01-30"
+    ni0.url = "https://aigents.icog-labs.com/one"
+    ni0.vote = False
+    ni1 = pb2.NewsItem()
+    ni1.title = "Test Article Two Title"
+    ni1.date = "2020-01-30"
+    ni1.url = "https://aigents.icog-labs.com/two"
+    ni1.vote = True
+    nis = pb2.NewsItems()
+    resp = stub.mvoteNews(nis)
+    print("Called mvoteNews ---->" , resp)
     assert resp.text == "OK"
 
 def remove_news(channel):
@@ -135,6 +168,22 @@ def remove_news(channel):
     print("Called rmNews ---->" , resp)
     assert resp.text == "OK"
 
+def mremove_news(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    ni0 = pb2.NewsItem()
+    ni0.title = "Test Article One Title"
+    ni0.date = "2020-01-30"
+    ni0.url = "https://aigents.icog-labs.com/one"
+    ni1 = pb2.NewsItem()
+    ni1.title = "Test Article Two Title"
+    ni1.date = "2020-01-30"
+    ni1.url = "https://aigents.icog-labs.com/two"
+    nis = pb2.NewsItems()
+    nis.news_items.extend([ni0, ni1])
+    resp = stub.mrmNews(nis)
+    print("Called mrmNews ---->" , resp)
+    assert resp.text == "OK"
+
 def make_friend(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     pa = pb2.PeerAction()
@@ -142,6 +191,20 @@ def make_friend(channel):
     pa.action = True
     resp = stub.mkFriend(pa)
     print("Called mkFriend ---->" , resp)
+    assert resp.text == "OK"
+
+def make_friends(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa0 = pb2.PeerAction()
+    pa0.email = "ayele@icog-labs.com"
+    pa0.action = True
+    pa1 = pb2.PeerAction()
+    pa1.email = "chala@icog-labs.com"
+    pa1.action = True
+    pas = pb2.PeerActions()
+    pas.peer_actions.extend([pa0, pa1])
+    resp = stub.mkFriends(pas)
+    print("Called mkFriends ---->" , resp)
     assert resp.text == "OK"
 
 def share_to_peer(channel):
@@ -153,6 +216,20 @@ def share_to_peer(channel):
     print("Called sharePeer ---->" , resp)
     assert resp.text == "OK"
 
+def share_to_peers(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa0 = pb2.PeerAction()
+    pa0.email = "ayele@icog-labs.com"
+    pa0.action = True
+    pa1 = pb2.PeerAction()
+    pa1.email = "chala@icog-labs.com"
+    pa1.action = True
+    pas = pb2.PeerActions()
+    pas.peer_actions.extend([pa0, pa1])
+    resp = stub.sharePeers(pas)
+    print("Called sharePeers ---->" , resp)
+    assert resp.text == "OK"
+
 def receive_from_peer(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     pa = pb2.PeerAction()
@@ -160,6 +237,20 @@ def receive_from_peer(channel):
     pa.action = True
     resp = stub.receivePeer(pa)
     print("Called receivePeer ---->" , resp)
+    assert resp.text == "OK"
+
+def receive_from_peers(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    pa0 = pb2.PeerAction()
+    pa0.email = "ayele@icog-labs.com"
+    pa0.action = True
+    pa1 = pb2.PeerAction()
+    pa1.email = "chala@icog-labs.com"
+    pa1.action = True
+    pas = pb2.PeerActions()
+    pas.peer_actions.extend([pa0, pa1])
+    resp = stub.receivePeers(pas)
+    print("Called receivePeers ---->" , resp)
     assert resp.text == "OK"
 
 def get_news_feed(channel):
@@ -181,7 +272,16 @@ with grpc.insecure_channel('localhost:9999') as channel:
     remove_topics(channel)
     remove_site(channel)
     remove_sites(channel)
+    create_news(channel)
+    mcreate_news(channel)
+    vote_news(channel)
+    mvote_news(channel)
+    remove_news(channel)
+    mremove_news(channel)
     make_friend(channel)
+    make_friends(channel)
     share_to_peer(channel)
+    share_to_peers(channel)
     receive_from_peer(channel)
+    receive_from_peers(channel)
     get_news_feed(channel)

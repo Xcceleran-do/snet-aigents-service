@@ -164,7 +164,7 @@ class AigentsAdapter():
         if share:
             self.aigents_friend(email, True)
         name, surname = self.aigents_get_peer_name(email)
-        req = "is peer, name " + name + " and email " + email + " share "
+        req = "is peer, name '" + name + "' and email '" + email + "' share "
         req += "true" if share else "false"
         r = self.request(req)
         return r
@@ -173,7 +173,7 @@ class AigentsAdapter():
         if receive:
             self.aigents_friend(email, True)
         name, surname = self.aigents_get_peer_name(email)
-        req = "is peer, name " + name + " and email " + email + " trust "
+        req = "is peer, name '" + name + "' and email '" + email + "' trust "
         req += "true" if receive else "false"
         r = self.request(req)
         return r
