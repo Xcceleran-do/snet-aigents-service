@@ -113,10 +113,6 @@ class AigentsAdapter():
         r = self.request("my topics '" + pattern + "', trusts '" + pattern + "'")
         return r
 
-    def aigents_add_topics(self, pattern):
-        r = self.request("my topics " + pattern + ", trusts " + pattern)
-        return r
-
     def aigents_add_site(self, site):
         r = self.request("my sites '" + site + "', trusts '" + site + "'")
         return r
