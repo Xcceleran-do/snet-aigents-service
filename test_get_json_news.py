@@ -35,12 +35,32 @@ def add_topic(channel):
     print("Called addTopic ---->" , resp)
     assert resp.text == "OK"
 
+def add_topics(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    t0 = pb2.Topic(pattern='{test pattern one [for topic one]}')
+    t1 = pb2.Topic(pattern='{test pattern two [for topic two]}')
+    ts = pb2.Topics()
+    ts.topics.extend([t0, t1])
+    resp = stub.addTopics(ts)
+    print("Called addTopics ---->" , resp)
+    assert resp.text == "OK"
+
 def add_site(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     s = pb2.Site()
     s.url = 'https://test-url.io'
     resp = stub.addSite(s)
     print("Called addSite --->" , resp)
+    assert resp.text == "OK"
+
+def add_sites(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    s0 = pb2.Site(url="http://test-url-one.com")
+    s1 = pb2.Site(url="http://test-url-two.com")
+    ss = pb2.Sites()
+    ss.sites.extend([s0, s1])
+    resp = stub.addSites(ss)
+    print("Called addSites --->" , resp)
     assert resp.text == "OK"
 
 def remove_topic(channel):
@@ -56,12 +76,32 @@ def remove_topic(channel):
     print("Called rmTopic ---->" , resp)
     assert resp.text == "OK"
 
+def remove_topics(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    t0 = pb2.Topic(pattern='{test pattern one [for topic one]}')
+    t1 = pb2.Topic(pattern='{test pattern two [for topic two]}')
+    ts = pb2.Topics()
+    ts.topics.extend([t0, t1])
+    resp = stub.rmTopics(ts)
+    print("Called rmTopics ---->" , resp)
+    assert resp.text == "OK"
+
 def remove_site(channel):
     stub = pb2_grpc.AigentsNewsFeedStub(channel)
     s = pb2.Site()
     s.url = 'https://test-url.io'
     resp = stub.rmSite(s)
     print("Called rmSite ---->" , resp)
+    assert resp.text == "OK"
+
+def remove_sites(channel):
+    stub = pb2_grpc.AigentsNewsFeedStub(channel)
+    s0 = pb2.Site(url="http://test-url-one.com")
+    s1 = pb2.Site(url="http://test-url-two.com")
+    ss = pb2.Sites()
+    ss.sites.extend([s0, s1])
+    resp = stub.rmSites(ss)
+    print("Called rmSites --->" , resp)
     assert resp.text == "OK"
 
 def create_news(channel):
@@ -134,9 +174,13 @@ with grpc.insecure_channel('localhost:9999') as channel:
     user_signup(channel)
     user_login(channel)
     add_topic(channel)
+    add_topics(channel)
     add_site(channel)
+    add_sites(channel)
     remove_topic(channel)
+    remove_topics(channel)
     remove_site(channel)
+    remove_sites(channel)
     make_friend(channel)
     share_to_peer(channel)
     receive_from_peer(channel)
