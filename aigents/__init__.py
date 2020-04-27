@@ -43,6 +43,7 @@ class AigentsAdapter():
 
     def __init__(self):
         self.settings = AigentsSettings()
+        print("Aigents Running Mode: ", self.settings._ENV_PREFIX)
         self.session = requests.session()
         # XXX logging in with default email for now (channel based)
         self.aigents_login(self.settings.AIGENTS_LOGIN_EMAIL,
