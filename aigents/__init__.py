@@ -72,7 +72,7 @@ class AigentsAdapter():
                        + ", surname " + l_name
                        + ", secret question " + sec_q
                        + ", secret answer " + sec_a)
-        if r == "What your " + sec_q.lower() + "?":
+        if r.lower() == "what your '" + sec_q.lower() + "'?":
             r = self.request("my " + sec_q + " " + sec_a)
         else:
             return AIGENTS_RESP_FAIL
@@ -85,7 +85,7 @@ class AigentsAdapter():
     def aigents_login(self, email, sec_q, sec_a):
         r = self.request("logout")
         r = self.request("my email " + email)
-        if r.lower() == "what your " + sec_q.lower() + "?":
+        if r.lower() == "what your '" + sec_q.lower() + "'?":
             r = self.request(sec_a)
         else:
             return AIGENTS_RESP_FAIL
