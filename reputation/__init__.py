@@ -57,7 +57,6 @@ class ReputationAdapter(ReputationServiceBase):
         self.verbose = True
         self.settings = ReputationSettings()
         self.name = self.settings.AIGENTS_LOGIN_NAME
-        self.verbose = False
         ReputationServiceBase.__init__(self, self.name, self.verbose)
         self.base_url = self.settings.AIGENTS_PATH
         self.login_email = self.settings.AIGENTS_LOGIN_EMAIL
@@ -162,24 +161,102 @@ class ReputationAdapter(ReputationServiceBase):
         else:
             return AIGENTS_RESP_FAIL
         
-    #TODO
-    def clear_ranks(self):
-        pass
-        
-    def clear_ratings(self):
-        pass
-        
+    # Ranking Service (Reputation Update/Provide) API
+    def put_ranks(self, date, ranks):
+        cmd = 'set ranks date ' + str(date) 
+        for rank in ranks:
+            cmd += ' id ' + str(rank['id']) + ' rank ' + str(rank['rank'])
+        res = self.reputation_request(cmd)
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+
     def get_ranks(self, filter):
-        pass
+        if 'ids' in filter:
+            ids = filter['ids']
+        else:
+            ids = None
+        res = self.reputation_request('get ranks date ' + str(filter['date']) + ('' if ids is None else ' ids ' + ids))
+        firstline = True
+        ranks = []
+        for line in res.splitlines():
+            if firstline is True:
+                if line != 'Ok.':
+                    return AIGENTS_RESP_FAIL
+                firstline = False
+            else:
+                rating = line.split('\t')
+                ranks.append({"id":rating[0],"rank":float(rating[1])})
+        return ranks
     
-    def get_ratings(self, filter):
-        pass
-    
-    def put_ranks(self, date, ranking):
-        pass
-    
-    def put_ratings(self, rating):
-        pass
-    
+    def clear_ranks(self):
+        res = self.reputation_request('clear ranks')
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+                
     def update_ranks(self, date):
-        pass
+        res = self.reputation_request('update ranks date ' + str(date) + ' fullnorm ' + ('true' if self.parameters['fullnorm'] else 'false') \
+            + ' ratings ' + str(self.parameters['ratings']) \
+            + ' spendings ' + str(self.parameters['spendings']) \
+            + ' parents ' + str(self.parameters['parents']) \
+            + ' predictiveness ' + str(self.parameters['predictiveness']) \
+            + ' pessimism ' + ('true' if self.parameters['rating_bias'] else 'false') \
+            + ' unrated ' + ('true' if self.parameters['unrated'] else 'false'))
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+
+    # Rating Service (Rating Update) API
+    def clear_ratings(self):
+        res = self.reputation_request('clear ratings')
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+        
+    def get_ratings(self, filter):
+        ids = ''
+        for id in filter['ids']:
+            ids += str(id)
+        res = self.reputation_request('get ratings since ' + str(filter['since']) + ' until ' + str(filter['until']) + ' ids' + ids)
+        firstline = True
+        ratings = []
+        for line in res.splitlines():
+            if firstline is True:
+                if line != 'Ok.':
+                    return 1, line
+                firstline = False
+            else:
+                rating = line.split('\t')
+                rating_dict = {}
+                #invert -d to -s suffixes
+                type = rating[1]
+                if type.endswith('-d'):
+                    rating_dict['type'] = type[:-2] + '-s'
+                    rating_dict['from'] = rating[2]
+                    rating_dict['to'] = rating[0]
+                else:
+                    rating_dict['type'] = type
+                    rating_dict['from'] = rating[0]
+                    rating_dict['to'] = rating[2]
+                rating_dict['value'] = float(rating[3])
+                #TODO properly get ratings time from Aigents implementation 
+                rating_dict['time'] = filter['since']
+                ratings.append(rating_dict)
+        return ratings
+    
+    def put_ratings(self, ratings):
+        cmd = 'add ratings '
+        for rating in ratings:
+            item = ' from ' + str(rating['from']) + ' type ' + rating['type'] + ' to ' + str(rating['to']) +\
+                    ' value ' + str(rating['value']) + (' weight ' + str(rating['weight']) if 'weight' in rating and rating['weight'] is not None else '') + ' time ' + str(rating['time'])
+            cmd += item
+        res = self.reputation_request(cmd)
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL

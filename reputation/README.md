@@ -8,6 +8,6 @@ Here the Reputation Service API is used to integrate it with snet-aigents-servic
 
 # Testing
 
-Point to a running aigents instance in settings.py
+Point to a running aigents instance in settings.py (needs to be an admin account)
 
 python3 aigents_reputation_service.py

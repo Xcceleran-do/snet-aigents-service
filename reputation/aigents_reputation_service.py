@@ -3,6 +3,7 @@
 import sys
 from concurrent import futures
 import time
+from datetime import datetime, date
 from __init__ import ReputationAdapter
 
 class ReputationFeed():
@@ -31,6 +32,27 @@ class ReputationFeed():
     def setParent(self, parent_id, list_of_children_ids):
         return self.reputation.set_parent(parent_id, list_of_children_ids)
         
+    def putRanks(self, date, ranks):
+        return self.reputation.put_ranks(date, ranks)
+
+    def getRanks(self, filter):
+        return self.reputation.get_ranks(filter)
+    
+    def clearRanks(self):
+        return self.reputation.clear_ranks()
+    
+    def updateRanks(self, date):
+        return self.reputation.update_ranks(date)    
+        
+    def clearRatings(self):
+        return self.reputation.clear_ratings()
+    
+    def getRatings(self, filter):
+        return self.reputation.get_ratings(filter)
+    
+    def putRatings(self, ratings):
+        return self.reputation.put_ratings(ratings)
+        
 def main():
     repFeed = ReputationFeed()
     print("Response from request: ", repFeed.req("my email?"))
@@ -42,6 +64,19 @@ def main():
     pid = 1
     cids = [2, 3]
     print("Response from set_parent: ", repFeed.setParent(pid, cids))
+    dt = date(2020, 3, 9)
+    dt1 = date(2020, 4, 9)
+    ranks = [{'id':1,'rank':50},{'id':2,'rank':50}]
+    rank_filter = {'date': dt, 'ids': '1 2'}
+    ratings_filter = {'ids':['2'], 'since':dt, 'until':dt1}
+    ratings = [{'from':12, 'type':'rating', 'to':2, 'value':100, 'weight':1, 'time':dt}]
+    print("Response from put_ranks: ", repFeed.putRanks(dt, ranks))
+    print("Response from get_ranks: ", repFeed.getRanks(rank_filter))
+    print("Response from update_ranks: ", repFeed.updateRanks(dt1))
+    print("Response from put_ratings: ", repFeed.putRatings(ratings))
+    print("Response from get_ratings: ", repFeed.getRatings(ratings_filter))
+    print("Response from clear_ratings: ", repFeed.clearRatings())    
+    print("Response from clear_ranks: ", repFeed.clearRanks())
     print("Response from close_session: ", repFeed.closeSession())
     
 if __name__ == '__main__':
