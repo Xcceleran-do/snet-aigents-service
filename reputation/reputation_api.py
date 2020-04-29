@@ -44,6 +44,9 @@ class ReputationService(abc.ABC):
 	def get_parameters(self):
 		pass
 
+	@abc.abstractmethod
+	def set_parent(self, parent_id, list_of_children_ids):
+		pass
 
 """
 Reputation Rating Service interface definition

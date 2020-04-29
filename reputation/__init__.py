@@ -118,15 +118,55 @@ class ReputationAdapter(ReputationServiceBase):
 
     def reputation_request(self, input):
         return self.request('reputation network ' + self.name + ' ' + input)
+
+    def set_parameters(self, parameters):
+        for key in parameters:
+            value = parameters[key]
+            self.parameters[key] = value
+        cmd = 'set parameters' \
+            + ' default ' + str(self.parameters['default']) \
+            + ' decayed ' + str(self.parameters['decayed']) \
+            + ' conservatism ' + str(self.parameters['conservatism']) \
+            + ' precision ' + str(self.parameters['precision']) \
+            + ' liquid ' + ('true' if self.parameters['liquid'] else 'false') \
+            + ' period ' + str(self.parameters['update_period']) \
+            + ' aggregation ' + ('true' if self.parameters['aggregation'] else 'false') \
+            + ' downrating ' + ('true' if self.parameters['downrating'] else 'false') \
+            + ' fullnorm ' + ('true' if self.parameters['fullnorm'] else 'false') \
+            + ' weighting ' + ('true' if self.parameters['weighting'] else 'false') \
+            + ' denomination ' + ('true' if self.parameters['denomination'] else 'false') \
+            + ' logratings ' + ('true' if self.parameters['logratings'] else 'false') \
+            + ' ratings ' + str(self.parameters['ratings']) \
+            + ' spendings ' + str(self.parameters['spendings']) \
+            + ' parents ' + str(self.parameters['parents']) \
+            + ' predictiveness ' + str(self.parameters['predictiveness']) \
+            + ' rating_bias ' + ('true' if self.parameters['rating_bias'] else 'false') \
+            + ' unrated ' + ('true' if self.parameters['unrated'] else 'false')
+        res = self.reputation_request(cmd)
+        
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+        
+    def get_parameters(self): 
+        return self.parameters
     
+    def set_parent(self, parent_id, list_of_children_ids):
+        cmd = 'set parent ' + str(parent_id) 
+        for id in list_of_children_ids:
+            cmd += ' child ' + str(id)
+        res = self.reputation_request(cmd)
+        if res.strip() == 'Ok.':
+            return AIGENTS_RESP_OK
+        else:
+            return AIGENTS_RESP_FAIL
+        
     #TODO
     def clear_ranks(self):
         pass
         
     def clear_ratings(self):
-        pass
-           
-    def get_parameters(self): 
         pass
         
     def get_ranks(self, filter):
@@ -139,9 +179,6 @@ class ReputationAdapter(ReputationServiceBase):
         pass
     
     def put_ratings(self, rating):
-        pass
-    
-    def set_parameters(self, parameters):
         pass
     
     def update_ranks(self, date):
