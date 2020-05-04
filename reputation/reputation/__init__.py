@@ -34,7 +34,7 @@ from reputation_base_api import *
 import logging
 import logging.handlers as loghandlers
 logger = logging.getLogger(__name__)
-from settings import ReputationSettings
+from . import settings #import ReputationSettings
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -55,7 +55,7 @@ class ReputationAdapter(ReputationServiceBase):
     def __init__(self):
         self.real_mode = True
         self.verbose = True
-        self.settings = ReputationSettings()
+        self.settings = settings.ReputationSettings()
         self.name = self.settings.AIGENTS_LOGIN_NAME
         ReputationServiceBase.__init__(self, self.name, self.verbose)
         self.base_url = self.settings.AIGENTS_PATH

@@ -4,7 +4,7 @@ import sys
 from concurrent import futures
 import time
 from datetime import datetime, date
-from __init__ import ReputationAdapter
+from reputation import ReputationAdapter
 
 class ReputationFeed():
     # these methods would have the grpc implementation of the Reputation System instead of testing functions. 
