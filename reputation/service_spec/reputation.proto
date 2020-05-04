@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package reputation;
+
+message Input {
+    string text = 1;
+}
+
+message Param { 
+    double default = 1;
+    double decayed = 2;
+    double conservatism = 3;
+    double precision = 4;
+    string liquid= 5;
+    double update_period = 6;
+    string aggregation = 7;
+    string downrating = 8;
+    string fullnorm = 9;
+    string weighting = 10;
+    string denomination = 11;
+    string logratings = 12;
+    double ratings = 13;
+    double spendings = 14;
+    string parents = 15;
+    string predictiveness = 16;
+    string rating_bias = 17;
+    string unrated = 18;
+}
+
+message Parent {
+    string parent_id = 1;
+    string child_id = 2;
+}
+
+message Rank {
+    string id = 1;
+    string rank = 2;
+}
+
+message Ranks {
+    string date = 1;
+    repeated Rank rank_val = 2; 
+}
+
+message RankRequest {
+    string date = 1;
+    string ids = 2;
+}
+
+message RankUpdate {
+    string date = 1;
+}
+
+message Rating {
+    string from = 1;
+    string type = 2;
+    string to = 3;
+    double value = 4;
+    double weight = 5;
+    string time = 6;
+}
+
+message Ratings {
+    repeated Rating rating_val = 1;
+}
+
+message RatingFilter {
+    string ids = 1;
+    string since = 2;
+    string until = 3;
+}
+
+message Request {
+    string text = 1;
+}
+
+message Response {
+    string text = 1;
+}
+
+service ReputationFeed {
+    rpc req(Input) returns (Response) {}
+    rpc reputationRequest(Input) returns (Response) {}
+    rpc setParameters(Param) returns (Response) {}
+    rpc getParameters(Request) returns (Param) {}
+    rpc setParent(Parent) returns (Response) {}
+    rpc putRanks(Ranks) returns (Response) {}
+    rpc getRanks(RankRequest) returns (Response) {}
+    rpc updateRanks(RankUpdate) returns (Response) {}
+    rpc putRatings(Ratings) returns (Response) {}
+    rpc getRatings(RatingFilter) returns (Response) {}
+}

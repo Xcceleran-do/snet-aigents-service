@@ -11,3 +11,5 @@ Here the Reputation Service API is used to integrate it with snet-aigents-servic
 Point to a running aigents instance in settings.py (needs to be an admin account)
 
 python3 aigents_reputation_service.py
+
+python3 -m grpc_tools.protoc -I service_spec --python_out=service_spec/ --grpc_python_out=service_spec/ service_spec/reputation.proto
