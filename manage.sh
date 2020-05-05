@@ -51,12 +51,13 @@ run_service_with_daemon() {
         docker inspect $C_NAME > /dev/null 2>&1
         if [ $? -eq 1 ] ; then
             printf "${GOOD_COLOR}Starting new container...${NORMAL_COLOR}\n"
-            docker run -d --name $C_NAME \
+            docker run --name $C_NAME \
                        -p $H_PORT:$C_PORT \
                        -p 7113:7113 \
                         -v /home/$USER/.certs/:/opt/singnet/.certs/ \
                        $I_NAME \
-                       python3  with_daemon/run_aigent.py   --daemon-config with_daemon/snetd_configs/snetd.ropsten.json
+                        supervisord -c  supervisord-inside-dev.conf -n
+
         else
             if [ "$(docker inspect -f '{{.State.Running}}' $C_NAME)" = "true"] ; then
                 printf "${OKAY_COLOR}Container already running. ${NORMAL_COLOR}\n"
@@ -76,13 +77,14 @@ run_service_with_daemon_prod() {
         if [ $? -eq 1 ] ; then
             printf "${GOOD_COLOR}Starting new container...${NORMAL_COLOR}\n"
             export AIGENTS_PROD_ENV=1
-            docker run -d --name $C_NAME \
+            docker run --name $C_NAME \
                        -p 6003:$C_PORT \
                        -p 6002:6002 \
                        -e AIGENTS_PROD_ENV \
                        -v /home/$USER/.certs/:/opt/singnet/.certs/ \
                        $I_NAME \
-                       python3  with_daemon/run_aigent.py   --daemon-config with_daemon/snetd_configs/snetd.ropsten.prod.json
+                        supervisord -c  supervisord-inside-prod.conf -n
+
         else
             if [ "$(docker inspect -f '{{.State.Running}}' $C_NAME)" = "true"] ; then
                 printf "${OKAY_COLOR}Container already running. ${NORMAL_COLOR}\n"

@@ -57,3 +57,6 @@ RUN protoc --proto_path=service_spec \
            --grpc_out=service_spec \
            --plugin=protoc-gen-grpc=$(which grpc_php_plugin) \
            ./service_spec/aigents.proto
+
+RUN pip3 install supervisor
+RUN mkdir -p /var/log/supervisor
