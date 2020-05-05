@@ -45,6 +45,28 @@ image and container named `snet_aigents` with the day's month and day as the tag
 The `build-proto` option is mainly for development. It builds the aigents.proto
 file for Python and PHP and keep them in [service_spec](./service_spec)
 
+### Steps To Run
+
+#### Build docker image
+
+``` 
+    DEV
+    bash manage.sh build snet_aigents_with_daemon_$USER
+    
+    PROD
+    bash manage.sh build snet-aigents-service
+```
+#### Start service
+
+``` 
+    DEV
+    supervisord -c supervisord-dev.conf
+    
+    PROD
+    supervisord -c supervisord-prod.conf 
+```
+
+
 ## Client
 
 There are example client codes for both Python and PHP. The PHP is chosen for
