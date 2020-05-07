@@ -108,7 +108,6 @@ class ReputationAdapter(ReputationServiceBase):
         except Exception as e:
             if self.verbose:
                 logger.error('request ' + url + ' ' + str(type(e)))
-            print('No connection to aigents')
             return 'No connection to Aigents, ' + str(type(e))
         if self.verbose:
             logger.info("Request: " + url)
