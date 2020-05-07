@@ -64,8 +64,8 @@ def main():
     pid = 1
     cids = [2, 3]
     print("Response from set_parent: ", repFeed.setParent(pid, cids))
-    dt = date(2020, 3, 9)
-    dt1 = date(2020, 4, 9)
+    dt = date(2007, 3, 9)
+    dt1 = date(2018, 4, 9)
     ranks = [{'id':1,'rank':50},{'id':2,'rank':50}]
     rank_filter = {'date': dt, 'ids': '1 2'}
     ratings_filter = {'ids':['2'], 'since':dt, 'until':dt1}
