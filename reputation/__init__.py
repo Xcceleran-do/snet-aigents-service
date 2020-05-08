@@ -29,12 +29,17 @@ import urllib.parse
 import requests
 import logging
 import logging.handlers as loghandlers
-from reputation_base_api import *
+#from reputation_base_api import *
+import os 
+cwd = os.getcwd()
+
+sys.path.append(cwd + "/reputation")
+from reputation_base_api import ReputationServiceBase
 
 import logging
 import logging.handlers as loghandlers
 logger = logging.getLogger(__name__)
-from . import settings #import ReputationSettings
+import settings #import ReputationSettings
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)

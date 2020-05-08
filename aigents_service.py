@@ -7,6 +7,8 @@ import grpc
 
 from aigents import AigentsAdapter
 
+from reputation import ReputationAdapter 
+
 sys.path.append("./service_spec")
 import aigents_pb2 as pb2
 import aigents_pb2_grpc as pb2_grpc
@@ -19,7 +21,8 @@ RESP_FAIL = "FAIL"
 class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
     def __init__(self):
         self.aigents = AigentsAdapter()
-    
+        self.reputation = ReputationAdapter()
+     
     def userSignup(self, req, ctxt):
         user_f_name = req.name
         user_l_name = req.surname
@@ -214,6 +217,84 @@ class AigentsNewsFeed(pb2_grpc.AigentsNewsFeedServicer):
         r.text = self.aigents.aigents_get_news(req.name)
         return r
 
+    # Reputation System Grpc service
+    def createSession(self, req, ctxt):
+        r = self.reputation.create_session()
+        return pb2.Response(text=r)
+        
+    def closeSession(self, req, ctxt):
+        r = self.reputation.close_session()
+        return pb2.Response(text=r)
+        
+    def req(self, req, ctxt):
+        r = self.reputation.request(req.text)
+        return pb2.Response(text=r)
+        
+    def reputationRequest(self, req, ctxt):
+        r = self.reputation.reputation_request(req.text)
+        return pb2.Response(text=r)
+    
+    def setParameters(self, req, ctxt):
+        param = {'default' : req.default, 'decayed' : req.decayed, 'conservatism' : req.conservatism, 'precision' : req.precision, 
+                 'update_period' : req.update_period, 'aggregation' : req.aggregation, 'downrating' : req.downrating, 
+                 'ratings' : req.ratings, 'spendings' : req.spendings, 'parents' : req.parents, 'predictiveness' : req.predictiveness}
+        r = self.reputation.set_parameters(param)
+        return pb2.Response(text=r)
+        
+    def getParameters(self, req, ctxt):
+        r = self.reputation.get_parameters()
+        return pb2.Param(default = r['default'], decayed = r['decayed'], conservatism = r['conservatism'], precision = r['precision'],
+                       liquid = r['liquid'], update_period = r['update_period'], aggregation = r['aggregation'], downrating = r['downrating'], 
+                       fullnorm = r['fullnorm'], weighting = r['weighting'], denomination = r['denomination'], 
+                       logratings = r['logratings'], ratings = r['ratings'], spendings = r['spendings'], parents = r['parents'], 
+                       predictiveness = r['predictiveness'], rating_bias = r['rating_bias'], unrated = r['unrated'])
+
+    def setParent(self, req, ctxt): #parent_id, list_of_children_ids
+        r = self.reputation.set_parent(req.parent_id, req.child_id)
+        return pb2.Response(text=r)
+        
+    def putRanks(self, req, ctxt): #date, ranks):
+        arr = []
+        ls = list(req.rank_val)
+        length = len(ls) 
+        for i in range(length):
+            arr.append({'id':ls[i].id,'rank':ls[i].rank})        
+        r = self.reputation.put_ranks(req.date, arr)
+        return pb2.Response(text=r)
+    
+    def getRanks(self, req, ctxt):
+        filter = {"ids ": req.ids, "date" : req.date}
+        ls = self.reputation.get_ranks(filter)
+        r = " ".join(str(x) for x in ls)
+        return pb2.Response(text=r)
+    
+    def updateRanks(self, req, ctxt):
+        r = self.reputation.update_ranks(req.date)    
+        return pb2.Response(text=r)
+        
+    def clearRanks(self, req, ctxt):
+        r = self.reputation.clear_ranks()
+        return pb2.Response(text=r)
+            
+    def putRatings(self, req, ctxt):
+        arr = []
+        rat_arr = list(req.rating_val)
+        length = len(rat_arr) 
+        for i in range(length):
+            arr.append({'from': rat_arr[i].from_rate,'type': rat_arr[i].type_rate, 'to': rat_arr[i].to_rate,'value': rat_arr[i].value,
+                        'weight': rat_arr[i].weight,'time': rat_arr[i].time})        
+        r = self.reputation.put_ratings(arr)
+        return pb2.Response(text=r)
+            
+    def getRatings(self, req, ctxt):
+        filter = {"ids": " " + req.ids, "since" : req.since, "until": req.until}
+        ls = self.reputation.get_ratings(filter)
+        r = " ".join(str(x) for x in ls)
+        return pb2.Response(text=r)
+                
+    def clearRatings(self, req, ctxt):
+        r = self.reputation.clear_ratings()
+        return pb2.Response(text=r)
 
 def main():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

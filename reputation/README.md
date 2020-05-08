@@ -1,3 +1,4 @@
+
 # Reputation Service 
 
 This repository contains early pre-alpha proof-of-concept developments and experiments for Reputation system of SingularityNET.
@@ -10,8 +11,27 @@ Here the Reputation Service API is used to integrate it with snet-aigents-servic
 
 Point to a running aigents instance in settings.py (needs to be an admin account)
 
-python3 aigents_reputation_service.py # for python module
+for running the python module of the reputation system
 
-python3 -m grpc_tools.protoc -I service_spec --python_out=service_spec/ --grpc_python_out=service_spec/ service_spec/reputation.proto
+    python3 aigents_reputation_service.py
 
-python3 test_reputation_grpc.py # for grpc endpoint
+ 
+
+return to the aigents directory to run the reputation system inside aigents
+
+    cd ..
+
+building proto file
+
+    python3 -m grpc_tools.protoc -I service_spec --python_out=service_spec/ --grpc_python_out=service_spec/ service_spec/aigents.proto
+
+run aigents service 
+
+    python3 aigents_service.py
+
+in another terminal, run test suite for the reputation system
+
+    python3 test_reputation_grpc.py 
+
+
+
