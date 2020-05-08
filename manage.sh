@@ -31,7 +31,7 @@ run_service() {
             docker run -d --name $C_NAME \
                        -p $H_PORT:$C_PORT \
                        $I_NAME \
-                       python3 aigents_news_service.py
+                       python3 aigents_service.py
         else
             if [ "$(docker inspect -f '{{.State.Running}}' $C_NAME)" = "true"] ; then
                 printf "${OKAY_COLOR}Container already running. ${NORMAL_COLOR}\n"
