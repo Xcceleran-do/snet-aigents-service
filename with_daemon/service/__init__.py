@@ -1,5 +1,5 @@
 registry = {
-    "aigents_news_service": {
+    "aigents_service": {
         "grpc": 7110,
     },
 }
