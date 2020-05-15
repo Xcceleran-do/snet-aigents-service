@@ -28,7 +28,7 @@ def main():
     #root_path = pathlib.Path(__file__).absolute().parent
     root_path="/singnet/aigents/"
     # All services modules go here
-    service_modules = ["aigents_news_service"]
+    service_modules = ["aigents_service"]
     
     # Call for all the services listed in service_modules
     all_p = start_all_services(root_path, service_modules, args.run_daemon, args.daemon_config, args.run_ssl)
