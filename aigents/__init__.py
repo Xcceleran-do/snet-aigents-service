@@ -185,5 +185,5 @@ class AigentsAdapter():
                          "description" : item.find('description').text})
         return resp
     def aigents_get_news(self, channel):
-        r = self.request("what new true sources, text, times, trust, relevance, social relevance, image, is?")
+        r = self.request("what new true sources, text, title, times, trust, relevance, social relevance, image, is?")
         return r
