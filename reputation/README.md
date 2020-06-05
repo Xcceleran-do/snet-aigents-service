@@ -15,8 +15,6 @@ for running the python module of the reputation system
 
     python3 aigents_reputation_service.py
 
- 
-
 return to the aigents directory to run the reputation system inside aigents
 
     cd ..
