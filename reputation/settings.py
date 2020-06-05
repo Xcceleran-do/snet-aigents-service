@@ -3,12 +3,12 @@ from pathlib import Path
 
 class ReputationSettings():
     def __init__(self, **custom_settings):
-        self.AIGENTS_PATH = 'https://aigentrep.icog-labs.com/al'
-        self.AIGENTS_LOGIN_EMAIL = 'eskender@singularitynet.io'
-        self.AIGENTS_LOGIN_NAME = 'test'
-        self.AIGENTS_LOGIN_SURNAME = 'Aigents'
-        self.AIGENTS_SECRET_QUESTION = 'favorite league'
-        self.AIGENTS_SECRET_ANSWER = 'bundesliga'
+        self.AIGENTS_PATH = 'https://aigents.icog-labs.com/69616567746e6c736e610067'
+        self.AIGENTS_LOGIN_EMAIL = 'dagim@singularitynet.io'
+        self.AIGENTS_LOGIN_NAME = 'dagim'
+        self.AIGENTS_LOGIN_SURNAME = 'sisay'
+        self.AIGENTS_SECRET_QUESTION = 'abebe'
+        self.AIGENTS_SECRET_ANSWER = 'beso'
         self.AIGENTS_RESP_OK = "Ok. "
         self.AIGENTS_RESP_FAIL = ["Nothing.", "No answer."]
         self.AIGENTS_FORMATS = ["text", "json", "html"]
