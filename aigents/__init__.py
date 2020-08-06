@@ -13,6 +13,7 @@ import logging
 import logging.handlers as loghandlers
 import xml.etree.ElementTree as ET
 import json
+import ast
 from typing import List
 
 from aigents.settings import AigentsSettings
@@ -184,6 +185,18 @@ class AigentsAdapter():
                          "link" : item.find('link').text,
                          "description" : item.find('description').text})
         return resp
+        
     def aigents_get_news(self, channel):
         r = self.request("what new true sources, text, title, times, trust, relevance, social relevance, image, is?")
+        result_list = ast.literal_eval(r)
+        unique_list = []
+        for result in result_list:
+            temp = 0
+            for unique in unique_list:
+                if result['sources']==unique['sources']:
+                    temp = 1
+                    break
+            if temp == 0:
+                unique_list.append(result)    
+        r = json.dumps(unique_list, ensure_ascii=False)
         return r
