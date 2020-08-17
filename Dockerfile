@@ -18,9 +18,11 @@ RUN apt-get update
 RUN pip3 install snet-cli
 
 RUN cd /tmp && \
-    wget "https://github.com/singnet/snet-daemon/releases/download/v3.1.1/snet-daemon-v3.1.1-linux-amd64.tar.gz" && \
-    tar -xvf snet-daemon-v3.1.1-linux-amd64.tar.gz && \
-    mv snet-daemon-v3.1.1-linux-amd64/snetd /usr/local/bin/snetd
+    wget "https://github.com/singnet/snet-daemon/releases/download/v4.0.0/snet-daemon-v4.0.0-linux-amd64.tar.gz" && \
+    tar -xvf snet-daemon-v4.0.0-linux-amd64.tar.gz && \
+    mv snet-daemon-v4.0.0-linux-amd64/snetd /usr/local/bin/snetd
+
+RUN apt-get update
 
 # install grpc
 RUN apt-get install -y build-essential \
@@ -41,6 +43,8 @@ RUN apt-get install -y build-essential \
     cd third_party/protobuf && \
     make install && \
     ldconfig
+
+RUN pip3 install --upgrade protobuf
 
 # set working dir
 WORKDIR /singnet/aigents
