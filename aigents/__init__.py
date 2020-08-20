@@ -187,7 +187,7 @@ class AigentsAdapter():
         return resp
         
     def aigents_get_news(self, channel):
-        r = self.request("what new true sources, text, title, times, trust, relevance, social relevance, image, is?")
+        r = self.request("what new true sources, text, title, summary, times, trust, relevance, social relevance, image, is?")
         result_list = ast.literal_eval(r)
         unique_list = []
         for result in result_list:
