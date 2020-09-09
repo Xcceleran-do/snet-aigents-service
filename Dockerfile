@@ -24,6 +24,7 @@ RUN cd /tmp && \
 
 RUN apt-get update
 
+RUN apt-get install cmake -y 
 # install grpc
 RUN apt-get install -y build-essential \
         autoconf \
@@ -37,9 +38,13 @@ RUN apt-get install -y build-essential \
     git clone -b $(curl -L https://grpc.io/release) https://github.com/grpc/grpc && \
     cd grpc && \
     git submodule update --init && \
+    make grpc_php_plugin    
+
+RUN  cd tmp/grpc && \
     make -j$(nproc) && \
-    make install && \
-    ldconfig && \
+    ldconfig
+
+RUN  cd tmp/grpc && \
     cd third_party/protobuf && \
     make install && \
     ldconfig
@@ -50,16 +55,12 @@ RUN pip3 install --upgrade protobuf
 WORKDIR /singnet/aigents
 ADD . /singnet/aigents
 
-RUN protoc --proto_path=service_spec \
-           --python_out=service_spec \
-           --grpc_out=service_spec \
-           --plugin=protoc-gen-grpc=$(which grpc_python_plugin) \
-           ./service_spec/aigents.proto
+RUN python3 -m grpc_tools.protoc --proto_path=service_spec --python_out=service_spec --grpc_python_out=service_spec ./service_spec/aigents.proto
 
 RUN protoc --proto_path=service_spec \
            --php_out=service_spec \
            --grpc_out=service_spec \
-           --plugin=protoc-gen-grpc=$(which grpc_php_plugin) \
+           --plugin=protoc-gen-grpc=/tmp/grpc/bins/opt/grpc_php_plugin \
            ./service_spec/aigents.proto
 
 RUN pip3 install supervisor
