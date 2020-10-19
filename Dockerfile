@@ -55,6 +55,15 @@ RUN pip3 install --upgrade protobuf
 WORKDIR /singnet/aigents
 ADD . /singnet/aigents
 
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y locales
+
+RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
+    dpkg-reconfigure --frontend=noninteractive locales && \
+    update-locale LANG=en_US.UTF-8
+
+ENV LANG en_US.UTF-8
+
+
 RUN python3 -m grpc_tools.protoc --proto_path=service_spec --python_out=service_spec --grpc_python_out=service_spec ./service_spec/aigents.proto
 
 RUN protoc --proto_path=service_spec \
